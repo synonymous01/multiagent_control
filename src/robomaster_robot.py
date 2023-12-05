@@ -6,9 +6,10 @@ from geometry_msgs.msg import PoseWithCovarianceStamped, Twist
 
 class robomaster_robot:
     def __init__(self, no):
-        name = "robot{}".format(no)
-        rospy.Subscriber("{}/robot_pose_ekf/odom_combined".format(name), PoseWithCovarianceStamped, self.update_pose)
-        self.pub = rospy.Publisher("{}/cmd_vel".format(name), Twist, queue_size=10)
+        self.name = "robot{}".format(no)
+        rospy.init_node("{}_controller".format(self.name))
+        rospy.Subscriber("{}/robot_pose_ekf/odom_combined".format(self.name), PoseWithCovarianceStamped, self.update_pose)
+        self.pub = rospy.Publisher("{}/cmd_vel".format(self.name), Twist, queue_size=10)
         self.position = np.zeros((1, 3))
         self.yaw = float()
 
@@ -23,3 +24,5 @@ class robomaster_robot:
         sending.linear.x = v
         sending.angular.z = omega
         self.pub.publish(sending)
+    
+    
