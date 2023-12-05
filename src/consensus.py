@@ -1,28 +1,9 @@
-#!/usr/bin/
+#!/usr/bin/env python
 import numpy as np
 import rospy
 from geometry_msgs.msg import PoseWithCovarianceStamped, Twist
-from tf.transformations import euler_from_quaternion
+from robomaster_robot import robomaster_robot
 
-class robomaster_robot:
-    def __init__(self, no):
-        name = "robot{}".format(no)
-        rospy.Subscriber("{}/robot_pose_ekf/odom_combined".format(name), PoseWithCovarianceStamped, self.update_pose)
-        self.pub = rospy.Publisher("{}/cmd_vel".format(name), Twist, queue_size=10)
-        self.position = np.zeros((1, 3))
-        self.yaw = float()
-
-    def update_pose(self, data):
-        self.position[0] = data.pose.pose.position.x
-        self.position[1] = data.pose.pose.position.y
-        self.position[2] = data.pose.pose.position.z
-        self.yaw, _, __ =  euler_from_quaternion(data.pose.pose.orientation)
-
-    def send_velocities(self, v, omega):
-        sending = Twist()
-        sending.linear.x = v
-        sending.angular.z = omega
-        self.pub.publish(sending)
 
     
 class formations:
@@ -79,5 +60,5 @@ class formations:
 try: 
     triangle = formations(3)
     triangle.create_formation()
-except KeyboardInterrupt:
+except rospy.ROSInterruptException:
     pass
