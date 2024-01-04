@@ -2,7 +2,8 @@
 import rospy
 import numpy as np
 from tf.transformations import euler_from_quaternion
-from geometry_msgs.msg import PoseWithCovarianceStamped, Twist
+from geometry_msgs.msg import PoseWithCovarianceStamped, Twist, TransformStamped
+import tf2_ros
 
 class robomaster_robot:
     def __init__(self, no):
@@ -14,10 +15,19 @@ class robomaster_robot:
         self.yaw = float()
 
     def update_pose(self, data):
-        self.position[0] = data.pose.pose.position.x
-        self.position[1] = data.pose.pose.position.y
-        self.position[2] = data.pose.pose.position.z
-        self.yaw, _, __ =  euler_from_quaternion(data.pose.pose.orientation)
+        broadcaster = tf2_ros.TransformBroadcaster()
+        t = TransformStamped()
+
+        t.header.stamp = rospy.Time.now()
+        t.header.frame_id = "map"
+        t.child_frame_id = f"{self.name}_odom"
+        t.transform.translation.x = data.pose.pose.position.x
+        t.transform.translation.y = data.pose.pose.position.y
+        t.transform.translation.z = 0.0
+        t.transform.rotation = data.pose.pose.orientation
+
+        broadcaster.sendTransform(t)
+        # self.yaw, _, __ =  euler_from_quaternion(data.pose.pose.orientation)
 
     def send_velocities(self, v, omega):
         sending = Twist()
