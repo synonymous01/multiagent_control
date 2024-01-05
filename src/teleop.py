@@ -11,16 +11,16 @@ def onpress(key):
         return True
     if key.char == 'w':
         print('moving forwards')
-        robot1.send_velocities(0.2, 0)
+        robot1.send_velocities(0.4, 0)
     elif key.char == 's':
         print('moving backwards')
-        robot1.send_velocities(-0.2, 0)
-    elif key.char == 'a':
-        print('moving right')
-        robot1.send_velocities(0, 1)
+        robot1.send_velocities(-0.4, 0)
     elif key.char == 'd':
+        print('moving right')
+        robot1.send_velocities(0, 60)
+    elif key.char == 'a':
         print('moving left')
-        robot1.send_velocities(0, -1)
+        robot1.send_velocities(0, -60)
     elif key.char == 'p':
         robot1.send_velocities(0, 0)
         return False
