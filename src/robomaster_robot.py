@@ -19,8 +19,8 @@ class robomaster_robot:
         t = TransformStamped()
 
         t.header.stamp = rospy.Time.now()
-        t.header.frame_id = "map"
-        t.child_frame_id = f"{self.name}_odom"
+        t.header.frame_id = "world"
+        t.child_frame_id = "{}_odom_combined".format(self.name)
         t.transform.translation.x = data.pose.pose.position.x
         t.transform.translation.y = data.pose.pose.position.y
         t.transform.translation.z = 0.0
