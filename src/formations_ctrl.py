@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 import numpy as np
 import rospy
-from geometry_msgs.msg import PoseWithCovarianceStamped, Twist
 from robomaster_robot import robomaster_robot
-import tf_conversions
 import tf2_ros
 
 
@@ -28,12 +26,27 @@ class formations:
         self.robots_reached = [False for _ in range(self.total_robots)]
         self.v_max = 0.2
         self.tolerance = 0.3
+        self.positions = np.zeros((self.total_robots, 2))
+        self.tfBuffer = tf2_ros.Buffer()
+        self.listener = tf2_ros.TransformListener(self.tfBuffer)
         self.update_errors()
 
+
+    def update_dists(self):
+        for i in range(self.total_robots):
+            try:
+                trans = self.tfBuffer.lookup_transform(f'robot{i}_odom_combined','world', 0)
+            except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
+                continue
+
+            self.positions[i, 0] = trans.transform.translation.x
+            self.positions[i, 1] = trans.transform.translation.y
+            
     def update_errors(self):
-            self.errs[0,:] = -1*(((self.robots[0].position - self.robots[1].position) - (self.loc_set[0,:] - self.loc_set[1,:])) + ((self.robots[0].position - self.robots[2].position) - (self.loc_set[0,:] - self.loc_set[2,:])))
-            self.errs[1,:] = -1*(((self.robots[1].position - self.robots[0].position) - (self.loc_set[1,:] - self.loc_set[0,:])) + ((self.robots[1].position - self.robots[2].position) - (self.loc_set[1,:] - self.loc_set[2,:])))
-            self.errs[2,:] = -1*(((self.robots[2].position - self.robots[1].position) - (self.loc_set[2,:] - self.loc_set[1,:])) + ((self.robots[2].position - self.robots[0].position) - (self.loc_set[2,:] - self.loc_set[0,:])))
+            self.update_dists()
+            self.errs[0,:] = -1*(((self.positions[0,:] - self.positions[1,:]) - (self.loc_set[0,:] - self.loc_set[1,:])) + ((self.positions[0,:] - self.positions[2,:]) - (self.loc_set[0,:] - self.loc_set[2,:])))
+            self.errs[1,:] = -1*(((self.positions[1,:] - self.positions[0,:]) - (self.loc_set[1,:] - self.loc_set[0,:])) + ((self.positions[1,:] - self.positions[2,:]) - (self.loc_set[1,:] - self.loc_set[2,:])))
+            self.errs[2,:] = -1*(((self.positions[2,:] - self.positions[1,:]) - (self.loc_set[2,:] - self.loc_set[1,:])) + ((self.positions[2,:] - self.positions[0,:]) - (self.loc_set[2,:] - self.loc_set[0,:])))
     
     def create_formation(self):
         goal_achieved = all(self.robots_reached)
