@@ -10,8 +10,6 @@ class robomaster_robot:
         # rospy.init_node("{}_controller".format(self.name))
         rospy.Subscriber("{}/robot_pose_ekf/odom_combined".format(self.name), PoseWithCovarianceStamped, self.update_pose)
         self.pub = rospy.Publisher("{}/cmd_vel".format(self.name), Twist, queue_size=10)
-        self.position = np.zeros((1, 3))
-        self.yaw = float()
         self.init_x = init_x
         self.init_y = init_y
 

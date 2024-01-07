@@ -3,6 +3,7 @@ import numpy as np
 import rospy
 from robomaster_robot import robomaster_robot
 import tf2_ros
+import tf.transformations
 
 
 
@@ -29,7 +30,7 @@ class formations:
         )
         self.robots = list()
         for i in range(total_robots):
-            self.robots.append(robomaster_robot(i))
+            self.robots.append(robomaster_robot(i), initial_positions[i,0], initial_positions[i,1])
 
         self.errs = np.zeros((self.total_robots, 2), dtype=np.float16)
         self.robots_reached = [False for _ in range(self.total_robots)]
@@ -38,6 +39,7 @@ class formations:
         self.positions = np.zeros((self.total_robots, 2))
         self.tfBuffer = tf2_ros.Buffer()
         self.listener = tf2_ros.TransformListener(self.tfBuffer)
+        self.yaws = np.zeros((self.total_robots))
         self.update_errors()
 
 
@@ -50,6 +52,15 @@ class formations:
 
             self.positions[i, 0] = trans.transform.translation.x
             self.positions[i, 1] = trans.transform.translation.y
+            orientation = [0,0,0,0]
+            orientation[0] = trans.transform.rotation.x
+            orientation[1] = trans.transform.rotation.y
+            orientation[2] = trans.transform.rotation.z
+            orientation[3] = trans.transform.rotation.w
+            self.yaws[i] = tf.transformations.euler_from_quaternion(orientation, axes='xyzs')
+
+
+
             
     def update_errors(self):
             self.update_dists()
@@ -66,13 +77,13 @@ class formations:
             for i in range(self.total_robots):
                 err = self.errs[i, :]
                 if np.linalg.norm(err) > self.tolerance:
-                    vx = np.cos(self.robots[i].yaw) * err[0] + np.sin(self.robots[i].yaw) * err[1]
+                    vx = np.cos(self.yaws[i]) * err[0] + np.sin(self.yaws[i]) * err[1]
 
                     if abs(vx) > self.v_max:
                         vx = np.sign(vx) * self.v_max
 
-                    omega = -np.sin(self.robots[i].yaw) * err[0] + np.cos(self.robots[i].yaw) * err[1]
-                    omega = omega * (180/np.pi)
+                    omega = -np.sin(self.yaws[i]) * err[0] + np.cos(self.yaws[i]) * err[1]
+                    # omega = omega * (180/np.pi)
                 else:
                     self.robots_reached[i] = True
                     print('robot {} reached'.format(i + 1))
@@ -81,9 +92,12 @@ class formations:
             self.update_errors()
             goal_achieved = all(self.robots_reached)
 
+        print('formation complete')
+
 
 try: 
     triangle = formations(3)
     triangle.create_formation()
+
 except rospy.ROSInterruptException:
     pass
