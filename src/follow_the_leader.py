@@ -10,7 +10,7 @@ import numpy as np
 follower = robomaster_robot(2, 0, -0.9)
 
 if __name__ == "__main__":
-    # rospy.init_node('follower_listener')
+    rospy.init_node('follower_listener')
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
 

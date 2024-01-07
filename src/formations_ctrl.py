@@ -5,11 +5,20 @@ from robomaster_robot import robomaster_robot
 import tf2_ros
 
 
+
     
 class formations:
     def __init__(self, total_robots):
         self.total_robots = total_robots
         rospy.init_node('formation_controller')
+        
+        initial_positions = np.array(
+            [
+                [0, 0],
+                [0, 0.9],
+                [0, 1.8]
+            ]
+        )
         
         self.loc_set = np.array(
              [
