@@ -57,7 +57,8 @@ class formations:
             orientation[1] = trans.transform.rotation.y
             orientation[2] = trans.transform.rotation.z
             orientation[3] = trans.transform.rotation.w
-            self.yaws[i] = tf.transformations.euler_from_quaternion(orientation, axes='xyzs')
+            roll, pitch, yaw = tf.transformations.euler_from_quaternion(orientation, axes='xyzs')
+            self.yaws[i] = yaw
 
 
 
