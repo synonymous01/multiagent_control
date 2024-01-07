@@ -1,18 +1,19 @@
 #!/usr/bin/env python
 import rospy
 import numpy as np
-from tf.transformations import euler_from_quaternion
 from geometry_msgs.msg import PoseWithCovarianceStamped, Twist, TransformStamped
 import tf2_ros
 
 class robomaster_robot:
-    def __init__(self, no):
+    def __init__(self, no, init_x = 0, init_y = 0):
         self.name = "robot{}".format(no)
         rospy.init_node("{}_controller".format(self.name))
         rospy.Subscriber("{}/robot_pose_ekf/odom_combined".format(self.name), PoseWithCovarianceStamped, self.update_pose)
         self.pub = rospy.Publisher("{}/cmd_vel".format(self.name), Twist, queue_size=10)
         self.position = np.zeros((1, 3))
         self.yaw = float()
+        self.init_x = init_x
+        self.init_y = init_y
 
     def update_pose(self, data):
         broadcaster = tf2_ros.TransformBroadcaster()
@@ -21,8 +22,8 @@ class robomaster_robot:
         t.header.stamp = rospy.Time.now()
         t.header.frame_id = "world"
         t.child_frame_id = "{}_odom_combined".format(self.name)
-        t.transform.translation.x = data.pose.pose.position.x
-        t.transform.translation.y = data.pose.pose.position.y
+        t.transform.translation.x = data.pose.pose.position.x + self.init_x
+        t.transform.translation.y = data.pose.pose.position.y + self.init_y
         t.transform.translation.z = 0.0
         t.transform.rotation = data.pose.pose.orientation
 

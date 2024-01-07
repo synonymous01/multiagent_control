@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="multiagent_master" type="teleop.py" name="robot1_teleop"/>
+    <node pkg="multiagent_master" type="leader_tail.py" name="creating_tail"/>
+    <node pkg="multiagent_master" type="follow_the_leader.py" name="follower"/>
+    <node pkg="rviz" name="rviz" type="rviz" args="-d $(find multiagent_master)/rviz/follow_tail.rviz" />
+
+</launch>
