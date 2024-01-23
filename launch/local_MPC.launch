@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <machine name="robomaster0" address="robot0" env-loader="/opt/ros/melodic/env.sh" user="root1234" password="Lums1234"/>
+    <machine name="robomaster1" address="robot1" env-loader="/opt/ros/melodic/env.sh" user="lums" password="root1234"/>
+    <machine name="robomaster2" address="robot2" env-loader="/opt/ros/melodic/env.sh" user="root1234" password="Lums1234"/>
+    <machine name="robomaster3" address="robot3" env-loader="/opt/ros/melodic/env.sh" user="robot" password="root1234"/>
+
+    <node name="matrix_maker" pkg="multiagent_control" type="MPC_matrices.py"/>
+    
+    <node name="keyboard-teleop" pkg="multiagent_control" type="teleop.py">
+        <param name="robot_number" value="robot0"/>
+    </node>
+    <include file="$(find multiagent_control)/launch/initiate_robomaster.launch">
+        <arg name="robot_name" value="robot1"/>
+        <arg name="machine_name" value="robomaster1"/>
+        <arg name="initial_x" value="0.0"/>
+        <arg name="initial_y" value="0.0"/>
+    </include>
+    <include file="$(find multiagent_control)/launch/initiate_robomaster.launch">
+        <arg name="robot_name" value="robot2"/>
+        <arg name="machine_name" value="robomaster2"/>
+        <arg name="initial_x" value="0.0"/>
+        <arg name="initial_y" value="0.0"/>
+    </include>
+    <include file="$(find multiagent_control)/launch/initiate_robomaster.launch">
+        <arg name="robot_name" value="robot3"/>
+        <arg name="machine_name" value="robomaster3"/>
+        <arg name="initial_x" value="0.0"/>
+        <arg name="initial_y" value="0.0"/>
+    </include>
+
+
+</launch>

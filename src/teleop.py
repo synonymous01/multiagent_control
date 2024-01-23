@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 from robomaster_robot import robomaster_robot
 from pynput import keyboard
+import rospy
 
-robot1 = robomaster_robot(1)
+
+rospy.init_node('robomaster_teleop')
+robot_number = rospy.get_param('~robot_number')
+robot1 = robomaster_robot(robot_number[-1])
 
 print("press p to stop. WASD movement")
 
