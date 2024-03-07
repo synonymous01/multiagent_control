@@ -5,6 +5,13 @@ the practical aspect
 # The aim of this project
 Our goal is to design and implement a system that consists of multiple mobile robots in a capture the flag game. We aim to create an LP-based multi-robot path planning algorithm that aims to defend a "defence zone" (read: flag)
 
+
+
+
+# Progress 
+Here is a working demonstration of our algorithm as of yet:
+<video src="https://github.com/synonymous01/multiagent_control/assets/40025239/7b3aa2ab-4ce5-4d47-b2b3-5522906577e5" />
+
 # My contributions
 Of course, I am working in a team for this project in the iMaSS lab so it's important to mention what my contributions to this project are.
 
