@@ -28,9 +28,10 @@ class robomaster_robot:
         broadcaster.sendTransform(t)
         # self.yaw, _, __ =  euler_from_quaternion(data.pose.pose.orientation)
 
-    def send_velocities(self, v, omega):
+    def send_velocities(self, vx, vy, omega=0):
         sending = Twist()
-        sending.linear.x = v
+        sending.linear.x = vx
+        sending.linear.y = vy
         sending.angular.z = omega
         self.pub.publish(sending)
     

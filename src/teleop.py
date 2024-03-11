@@ -6,9 +6,11 @@ import rospy
 
 rospy.init_node('robomaster_teleop')
 robot_number = rospy.get_param('~robot_number')
-robot1 = robomaster_robot(robot_number[-1])
+init_x = rospy.get_param('~initial_x')
+init_y = rospy.get_param('~initial_y')
+robot1 = robomaster_robot(robot_number[-1], init_x, init_y)
 
-print("press p to stop. WASD movement")
+print("press q to stop. WASD movement")
 
 def onpress(key):
     if not hasattr(key, 'char'):
@@ -21,11 +23,11 @@ def onpress(key):
         robot1.send_velocities(-0.4, 0)
     elif key.char == 'd':
         print('moving right')
-        robot1.send_velocities(0, 60)
+        robot1.send_velocities(0, 0.4)
     elif key.char == 'a':
         print('moving left')
-        robot1.send_velocities(0, -60)
-    elif key.char == 'p':
+        robot1.send_velocities(0, -0.4)
+    elif key.char == 'q':
         robot1.send_velocities(0, 0)
         return False
 

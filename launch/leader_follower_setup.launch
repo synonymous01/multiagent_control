@@ -1,5 +1,25 @@
 <?xml version="1.0"?>
 <launch>
+
+    <machine name="robomaster0" address="robot0" env-loader="/opt/ros/melodic/env.sh" user="root1234" password="Lums1234"/>
+    <machine name="robomaster1" address="robot1" env-loader="/opt/ros/melodic/env.sh" user="lums" password="root1234"/>
+
+    <include file="$(find multiagent_control)/launch/initiate_robomaster.launch">
+        <arg name="robot_name" value="robot0"/>
+        <arg name="machine_name" value="robomaster0"/>
+        <arg name="initial_x" value="0.0"/>
+        <arg name="initial_y" value="0.0"/>
+        <arg name="MPCmodel" value="false"/>
+    </include>
+
+    <include file="$(find multiagent_control)/launch/initiate_robomaster.launch">
+        <arg name="robot_name" value="robot1"/>
+        <arg name="machine_name" value="robomaster1"/>
+        <arg name="initial_x" value="0.0"/>
+        <arg name="initial_y" value="0.9"/>
+        <arg name="MPCmodel" value="false"/>
+    </include>
+
     <node pkg="multiagent_master" type="teleop.py" name="robot1_teleop"/>
     <node pkg="multiagent_master" type="leader_tail.py" name="creating_tail"/>
     <node pkg="multiagent_master" type="follow_the_leader.py" name="follower"/>
