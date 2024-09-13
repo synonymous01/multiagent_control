@@ -36,8 +36,13 @@ while not rospy.is_shutdown():
             continue
         # rospy.loginfo("for robot {}, x: {}, y: {}".format(i, trans.transform.translation.x, trans.transform.translation.y))
 
+        if i == 0:
+            if trans.transform.translation.y < 0:
+                won = True
         sectors[i] = coords_to_sector(trans.transform.translation.x, trans.transform.translation.y)
     rospy.loginfo("sectors sent: {}".format(sectors))
+    if sectors[0] == sectors[1] or sectors[0] == sectors[2] or sectors[0] == sectors[3] or won:
+        sectors = [-1, -1, -1, -1]
     sending.data = sectors
     publisher.publish(sending)
     

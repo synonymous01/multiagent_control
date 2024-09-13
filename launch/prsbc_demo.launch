@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name="confidence_level" default="1"/>
+
+    <machine name="robomaster0" address="192.168.0.141" env-loader="/home/root1234/catkin_ws/devel/env.sh" user="root1234" password="Lums1234"/>
+    <machine name="robomaster1" address="192.168.0.140" env-loader="/home/lums/catkin_ws/devel/env.sh" user="lums" password="root1234"/>
+    <machine name="robomaster2" address="192.168.0.115" env-loader="/home/root1234/catkin_ws/devel/env.sh" user="root1234" password="Lums1234" />
+    <machine name="robomaster3" address="192.168.0.233" env-loader="/home/robot4/catkin_ws/devel/env.sh" user="robot4" password="root1234"/>
+
+
+    <include file="$(find multiagent_master)/launch/initiate_robomaster.launch">
+        <arg name="robot_name" value="robot0"/>
+        <arg name="machine_name" value="robomaster0"/>
+        <arg name="MPCmodel" value="false"/>
+        <arg name="is_camera_enabled" value="false"/>
+        <arg name="confidence_level" value="$(arg confidence_level)"/>
+        
+
+        <arg name="initial_x" value="2.025"/>
+        <arg name="initial_y" value="3.375"/>
+    </include>
+
+    <include file="$(find multiagent_master)/launch/initiate_robomaster.launch">
+        <arg name="robot_name" value="robot1"/>
+        <arg name="machine_name" value="robomaster1"/>
+        <arg name="MPCmodel" value="false"/>
+        <arg name="is_camera_enabled" value="false"/>
+        <arg name="confidence_level" value="$(arg confidence_level)"/>
+
+
+        <arg name="initial_x" value="1.125"/>
+        <arg name="initial_y" value="2.025"/>
+    </include>
+
+    <include file="$(find multiagent_master)/launch/initiate_robomaster.launch">
+        <arg name="robot_name" value="robot2"/>
+        <arg name="machine_name" value="robomaster2"/>
+        <arg name="MPCmodel" value="false"/>
+        <arg name="is_camera_enabled" value="false"/>
+        <arg name="confidence_level" value="$(arg confidence_level)"/>
+
+        <arg name="initial_x" value="2.025"/>
+        <arg name="initial_y" value="0.225"/>
+    </include>
+
+    <include file="$(find multiagent_master)/launch/initiate_roboamaster.launch">
+        <arg name="robot_name" value="robot3"/>
+        <arg name="machine_name" value="robomaster3"/>
+        <arg name="MPCmodel" value="false"/>
+        <arg name="is_camera_enabled" value="false"/>
+        <arg name="confidence_level" value="$(arg confidence_level)"/>
+
+        <arg name="initial_x" value="3.375"/>
+        <arg name="initial_y" value="2.025"/>
+    </include>
+
+    <node pkg="rviz" name="rviz" type="rviz" args="-d $(find multiagent_master)/rviz/MPC_model.rviz" />
+    <node pkg="multiagent_master" type="prsbc_demo.py" name="goal_sender"/>
+</launch>
