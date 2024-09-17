@@ -2,6 +2,8 @@
 
 <launch>
     <arg name="confidence_level" default="1"/>
+    <arg name="magnitude_limit" default="0.1"/>
+    <arg name="safety_radius" default="0.5"/>
     
     <machine name="robomaster0" address="192.168.0.141" env-loader="/home/root1234/catkin_ws/devel/env.sh" user="root1234"/>
     <!-- 192.168.0.140 -->
@@ -16,6 +18,8 @@
         <arg name="MPCmodel" value="false"/>
         <arg name="is_camera_enabled" value="false"/>
         <arg name="confidence_level" value="$(arg confidence_level)"/>
+        <arg name="magnitude_limit" value="$(arg magnitude_limit)"/>
+        <arg name="safety_radius" value="$(arg safety_radius)"/>
         
 
         <arg name="initial_x" value="2.025"/>
@@ -28,6 +32,8 @@
         <arg name="MPCmodel" value="false"/>
         <arg name="is_camera_enabled" value="false"/>
         <arg name="confidence_level" value="$(arg confidence_level)"/>
+        <arg name="magnitude_limit" value="$(arg magnitude_limit)"/>
+        <arg name="safety_radius" value="$(arg safety_radius)"/>
 
         <arg name="initial_x" value="1.125"/>
         <arg name="initial_y" value="2.025"/>
@@ -39,6 +45,8 @@
         <arg name="MPCmodel" value="false"/>
         <arg name="is_camera_enabled" value="false"/>
         <arg name="confidence_level" value="$(arg confidence_level)"/>
+        <arg name="magnitude_limit" value="$(arg magnitude_limit)"/>
+        <arg name="safety_radius" value="$(arg safety_radius)"/>
 
         <arg name="initial_x" value="2.025"/>
         <arg name="initial_y" value="0.225"/>
@@ -50,6 +58,8 @@
         <arg name="MPCmodel" value="false"/>
         <arg name="is_camera_enabled" value="false"/>
         <arg name="confidence_level" value="$(arg confidence_level)"/>
+        <arg name="magnitude_limit" value="$(arg magnitude_limit)"/>
+        <arg name="safety_radius" value="$(arg safety_radius)"/>
 
         <arg name="initial_x" value="3.375"/>
         <arg name="initial_y" value="2.025"/>
