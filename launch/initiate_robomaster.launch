@@ -38,12 +38,12 @@
 		<!-- <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0 0 0 0 0 0 $(arg robot_name)_base_link $(arg robot_name)_laser 30" /> -->
 		<node pkg="tf" machine="$(arg machine_name)" type="static_transform_publisher" name="imu_broadcaster" args="0 0 0 0 0 0 $(arg robot_name)_base_link $(arg robot_name)_imu 30" />
 		<node pkg="tf" machine="$(arg machine_name)" type="static_transform_publisher" name="base_link_broadcaster" args="0 0 0 0 0 0 $(arg robot_name)_base_footprint $(arg robot_name)_base_link 30" />
-		<node pkg="tf" machine="$(arg machine_name)" type="static_transform_publisher" name="camera_base_broadcaster" args="0.095 0.05 0.2 0 0 0 $(arg robot_name)_base_footprint $(arg robot_name)_base_link 30"/>
-		<node name="handler" machine="$(arg machine_name)" pkg="robomaster_interface" type="robot_handler.py" if="$(arg MPCmodel)">
+		<node pkg="tf" if="$(arg is_camera_enabled)" machine="$(arg machine_name)" type="static_transform_publisher" name="camera_base_broadcaster" args="0.095 0.05 0.2 0 0 0 $(arg robot_name)_base_footprint $(arg robot_name)_base_link 30"/>
+		<node name="handler" machine="$(arg machine_name)" pkg="robomaster_interface" type="robot_handler.py"> <!--if="$(arg MPCmodel)"-->
 			<param name="robot_number" value="$(arg robot_name)"/>
 			<param name="initial_x" value="$(arg initial_x)"/>
 			<param name="initial_y" value="$(arg initial_y)"/>
-			<param name="meter_per_sector_length" value="$(arg meter_per_sector_length)"/>
+			<param name="meter_per_sector_length" value="$(arg meter_per_square_length)"/>
 			<param name="confidence_level" value="$(arg confidence_level)" />
 		</node>
 		<node name="MPC_model" machine="$(arg machine_name)" pkg="robomaster_interface" type="MPC_model_fixed.py" if="$(arg MPCmodel)">
