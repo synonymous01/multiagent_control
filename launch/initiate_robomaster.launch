@@ -9,6 +9,8 @@
 	<arg name="MPCmodel" default="true"/>
 	<arg name="meter_per_square_length" default="0.45"/>
 	<arg name="confidence_level" default="1"/>
+	<arg name="magnitude_limit" default="0.1"/>
+	<arg name="safety_radius" default="0.5"/>
 
 	
 	<group ns="$(arg robot_name)">
@@ -45,6 +47,8 @@
 			<param name="initial_y" value="$(arg initial_y)"/>
 			<param name="meter_per_sector_length" value="$(arg meter_per_square_length)"/>
 			<param name="confidence_level" value="$(arg confidence_level)" />
+			<param name="safety_radius" value="$(arg safety_radius)"/>
+			<param name="magnitude_limit" value="$(arg magnitude_limit)"/>
 		</node>
 		<node name="MPC_model" machine="$(arg machine_name)" pkg="robomaster_interface" type="MPC_model_fixed.py" if="$(arg MPCmodel)">
 			<param name="robot_number" value="$(arg robot_name)"/>
