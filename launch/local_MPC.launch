@@ -4,12 +4,12 @@
 
     <arg name="is_camera_enabled" default="false"/>
     <arg name="is_MPC_enabled" default="true"/>
-    <node name="matrix_maker" pkg="multiagent_master" type="MPC_matrices.py" unless="$(arg is_camera_enabled)"/>
+    <!-- <node name="matrix_maker" pkg="multiagent_master" type="MPC_matrices.py" unless="$(arg is_camera_enabled)"/> -->
     
     <!-- <machine name="robomaster0" address="192.168.0.141" env-loader="/home/root1234/catkin_ws/devel/env.sh" user="root1234" password="Lums1234"/> -->
-    <machine name="robomaster1" address="192.168.0.140" env-loader="/home/lums/catkin_ws/devel/env.sh" user="lums"/>
+    <machine name="robomaster1" address="192.168.0.140" env-loader="/home/lums/catkin_ws/devel/env.sh" user="lums" timeout="100"/>
     <machine name="robomaster2" address="192.168.0.115" env-loader="/home/root1234/catkin_ws/devel/env.sh" user="root1234"/>
-    <machine name="robomaster3" address="192.168.0.233" env-loader="/home/robot4/catkin_ws/devel/env.sh" user="robot4"/>
+    <machine name="robomaster3" address="192.168.0.114" env-loader="/home/robot4/catkin_ws/devel/env.sh" user="robot4"/>
 
     
     <!-- <include file="$(find multiagent_master)/launch/initiate_robomaster.launch">
@@ -18,20 +18,16 @@
         <arg name="MPCmodel" value="false"/>
     </include> -->
 
-    <!-- <node name="teleop" pkg="multiagent_master" type="teleop.py"> -->
-        <!-- <param name="robot_number" value="robot0"/> -->
-        <!-- <param name="initial_x" value="0.5"/> -->
-        <!-- <param name="initial_y" value="3.5"/> -->
-        <!-- <param name="initial_x" value="0.25"/> -->
-        <!-- <param name="initial_y" value="3.25"/> -->
-    <!-- </node> -->
+    <!-- <node name="teleop" pkg="multiagent_master" type="teleop.py">
+        <param name="robot_number" value="robot0"/>
+        <param name="initial_x" value="2.025"/>
+        <param name="initial_y" value="3.375"/>
+    </node> -->
     <include file="$(find multiagent_master)/launch/initiate_robomaster.launch">
         <arg name="robot_name" value="robot1"/>
         <arg name="machine_name" value="robomaster1"/>
         <arg name="is_camera_enabled" value="$(arg is_camera_enabled)"/>
         <arg name="MPCmodel" value="$(arg is_MPC_enabled)"/>
-        <!-- <arg name="initial_x" value="0.5"/> -->
-        <!-- <arg name="initial_y" value="0.5"/> -->
         <arg name="initial_x" value="0.25"/>
         <arg name="initial_y" value="0.25"/>
     </include>
@@ -40,25 +36,22 @@
         <arg name="machine_name" value="robomaster2"/>
         <arg name="is_camera_enabled" value="$(arg is_camera_enabled)"/>
         <arg name="MPCmodel" value="$(arg is_MPC_enabled)"/>
-        <!-- <arg name="initial_x" value="1.5"/> -->
-        <!-- <arg name="initial_y" value="0.5"/> -->
-        <arg name="initial_x" value="1.25"/>
+        <!-- <arg name="initial_x" value="2.025"/> -->
+        <arg name="initial_x" value="1.575"/>
         <arg name="initial_y" value="0.25"/>
-        <!-- <arg name="MPCmodel" value="false"/>w -->
+        <!-- <arg name="MPCmodel" value="false"/> -->
     </include>
     <include file="$(find multiagent_master)/launch/initiate_robomaster.launch">
         <arg name="robot_name" value="robot3"/>
         <arg name="machine_name" value="robomaster3"/>
         <arg name="is_camera_enabled" value="$(arg is_camera_enabled)"/>
         <arg name="MPCmodel" value="$(arg is_MPC_enabled)"/>
-        <!-- <arg name="initial_x" value="2.5"/>
-        <arg name="initial_y" value="0.5"/> -->
-        <arg name="initial_x" value="2.25"/>
+        <arg name="initial_x" value="2.925"/>
         <arg name="initial_y" value="0.25"/>
     </include>
 
 
-
+    <!-- <node name="remote_launcher" pkg="multiagent_master" type="remote_launch.bash"/> -->
     <node pkg="rviz" name="rviz" type="rviz" args="-d $(find multiagent_master)/rviz/MPC_model.rviz" />
 
 </launch>
